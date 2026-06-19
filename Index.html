@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Funnel Link$</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050505;
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+}
+
+/* TOP BAR */
+
+.topbar{
+position:sticky;
+top:0;
+z-index:1000;
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+background:#111;
+border-bottom:1px solid #222;
+}
+
+#clock{
+font-size:14px;
+color:#00e5ff;
+min-width:80px;
+}
+
+#search{
+flex:1;
+padding:10px;
+border:none;
+border-radius:10px;
+background:#222;
+color:white;
+}
+
+#loginBtn{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#ff00d4;
+color:white;
+cursor:pointer;
+}
+
+/* LOGO */
+
+.logoControl{
+position:fixed;
+top:70px;
+left:50%;
+transform:translateX(-50%);
+width:100px;
+height:100px;
+border-radius:50%;
+overflow:hidden;
+background:black;
+border:3px solid #00e5ff;
+box-shadow:0 0 20px #00e5ff;
+z-index:999;
+transition:.3s;
+}
+
+.logoControl.active{
+transform:translateX(-50%) scale(1.15);
+border-color:#ff00d4;
+box-shadow:0 0 25px #ff00d4;
+}
+
+.logoControl img{
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+/* CARD on background create a filter that goes pitch black and faded black as well as a pitch white and fadee white, as well as trasparent.  */
+
+.profileCard{
+margin:180px auto 20px;
+width:95%;
+max-width:500px;
+
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(12px);
+
+border-radius:25px;
+padding:20px;
+text-align:center;
+
+border:1px solid rgba(255,255,255,.2);
+}
+
+#profileImg{
+width:220px;
+height:220px;
+object-fit:cover;
+border-radius:20px;
+margin-bottom:15px;
+}
+
+#title{
+font-size:30px;
+margin-bottom:8px;
+}
+
+#status{
+opacity:.8;
+margin-bottom:15px;
+}
+
+#visitors{
+margin-bottom:15px;
+color:#00e5ff;
+}
+
+/* BUTTONS */
+
+.btn{
+display:block;
+padding:14px;
+margin:10px auto;
+width:90%;
+text-decoration:none;
+border-radius:12px;
+font-weight:bold;
+}
+
+.primary{
+background:#00e5ff;
+color:black;
+}
+
+.secondary{
+background:#ff00d4;
+color:white;
+}
+
+.download{
+width:90%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+background:red;
+color:white;
+cursor:pointer;
+}
+
+/* QR */
+
+#qrPanel{
+display:none;
+margin-top:20px;
+}
+
+#qr{
+width:220px;
+}
+
+/* LEAD POPUP */
+
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.8);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:5000;
+}
+
+.popupContent{
+width:90%;
+max-width:400px;
+background:#111;
+padding:25px;
+border-radius:20px;
+text-align:center;
+}
+
+.popupContent h2{
+margin-bottom:15px;
+}
+
+.popupContent input{
+width:100%;
+padding:12px;
+margin-bottom:10px;
+border:none;
+border-radius:10px;
+background:#222;
+color:white;
+}
+
+.popupContent button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#00e5ff;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* SWIPE HINT */
+
+.swipeHint{
+text-align:center;
+padding:15px;
+opacity:.5;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.logoControl{
+width:80px;
+height:80px;
+}
+
+.profileCard{
+margin-top:150px;
+}
+
+#profileImg{
+width:180px;
+height:180px;
+}
+
+#title{
+font-size:24px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+
+<div id="clock"></div>
+
+<input
+id="search"
+placeholder="Search Funnels">
+
+<button id="loginBtn">
+Login
+</button>
+
+</div>
+
+<div class="logoControl" id="logoControl">
+
+<!-- Replace with your logo file -->
+<img src="Funnel_Link$.png">
+
+</div>
+
+<div class="profileCard">
+
+<div id="visitors">
+Visitors: 0
+</div>
+
+<img
+id="profileImg"
+src="https://picsum.photos/400?1">
+
+<h2 id="title">
+Funnel Link$
+</h2>
+
+<p id="status">
+Web Funnel • Live
+</p>
+
+<a href="#" class="btn primary">
+Visit Funnel
+</a>
+
+<a href="#" class="btn secondary">
+Instagram
+</a>
+
+<button
+class="download"
+onclick="downloadCSV()">
+Download CSV
+</button>
+
+<div id="qrPanel">
+
+<h3>QR Code</h3>
+
+<img id="qr">
+
+</div>
+
+</div>
+
+<div class="swipeHint">
+⬅ Swipe Profiles ➡
+</div>
+
+<!-- LEAD POPUP -->
+
+<div class="popup" id="popup">
+
+<div class="popupContent">
+
+<h2>
+Join Funnel List
+</h2>
+
+<input
+type="email"
+id="email"
+placeholder="Email">
+
+<input
+type="tel"
+id="phone"
+placeholder="Phone">
+
+<button onclick="saveLeadForm()">
+Submit
+</button>
+
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Funnel Link$</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050505;
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+}
+
+/* TOP BAR */
+
+.topbar{
+position:sticky;
+top:0;
+z-index:1000;
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+background:#111;
+border-bottom:1px solid #222;
+}
+
+#clock{
+font-size:14px;
+color:#00e5ff;
+min-width:80px;
+}
+
+#search{
+flex:1;
+padding:10px;
+border:none;
+border-radius:10px;
+background:#222;
+color:white;
+}
+
+#loginBtn{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#ff00d4;
+color:white;
+cursor:pointer;
+}
+
+/* LOGO */
+
+.logoControl{
+position:fixed;
+top:70px;
+left:50%;
+transform:translateX(-50%);
+width:100px;
+height:100px;
+border-radius:50%;
+overflow:hidden;
+background:black;
+border:3px solid #00e5ff;
+box-shadow:0 0 20px #00e5ff;
+z-index:999;
+transition:.3s;
+}
+
+.logoControl.active{
+transform:translateX(-50%) scale(1.15);
+border-color:#ff00d4;
+box-shadow:0 0 25px #ff00d4;
+}
+
+.logoControl img{
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+/* CARD */
+
+.profileCard{
+margin:180px auto 20px;
+width:95%;
+max-width:500px;
+
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(12px);
+
+border-radius:25px;
+padding:20px;
+text-align:center;
+
+border:1px solid rgba(255,255,255,.2);
+}
+
+#profileImg{
+width:220px;
+height:220px;
+object-fit:cover;
+border-radius:20px;
+margin-bottom:15px;
+}
+
+#title{
+font-size:30px;
+margin-bottom:8px;
+}
+
+#status{
+opacity:.8;
+margin-bottom:15px;
+}
+
+#visitors{
+margin-bottom:15px;
+color:#00e5ff;
+}
+
+/* BUTTONS */
+
+.btn{
+display:block;
+padding:14px;
+margin:10px auto;
+width:90%;
+text-decoration:none;
+border-radius:12px;
+font-weight:bold;
+}
+
+.primary{
+background:#00e5ff;
+color:black;
+}
+
+.secondary{
+background:#ff00d4;
+color:white;
+}
+
+.download{
+width:90%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+background:red;
+color:white;
+cursor:pointer;
+}
+
+/* QR */
+
+#qrPanel{
+display:none;
+margin-top:20px;
+}
+
+#qr{
+width:220px;
+}
+
+/* LEAD POPUP */
+
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.8);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:5000;
+}
+
+.popupContent{
+width:90%;
+max-width:400px;
+background:#111;
+padding:25px;
+border-radius:20px;
+text-align:center;
+}
+
+.popupContent h2{
+margin-bottom:15px;
+}
+
+.popupContent input{
+width:100%;
+padding:12px;
+margin-bottom:10px;
+border:none;
+border-radius:10px;
+background:#222;
+color:white;
+}
+
+.popupContent button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#00e5ff;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* SWIPE HINT */
+
+.swipeHint{
+text-align:center;
+padding:15px;
+opacity:.5;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.logoControl{
+width:80px;
+height:80px;
+}
+
+.profileCard{
+margin-top:150px;
+}
+
+#profileImg{
+width:180px;
+height:180px;
+}
+
+#title{
+font-size:24px;
+}
+
+}
+
+</style>
+</head>
+<body class=" on background create a filter that goes pitch black and faded black as well as a pitch white and fadee white, as well as trasparent and aparent.">
+
+<div class="topbar">
+
+<div id="clock"></div>
+
+<input
+id="search"
+placeholder="Search Funnels">
+
+<button id="loginBtn">
+Login
+</button>
+
+</div>
+
+<div class="logoControl" id="logoControl">
+
+<!-- Replace with your logo file -->
+<img src="Funnel_Link$.png">
+  <!--h1 channel title name replaces from channel to name every 5 seconds for 3 seconds --></!--h1-->
+</div>
+
+<div class="profileCard">
+  <!-- visitors track screen press locations, on daily,weekly, monthly,and yearly bases press visitors to change visior view each press changes view and shows the up to date weekly, monthly, view -->
+<div id="visitors">
+Visitors: 0
+</div>
+
+<img
+id="profileImg"
+src="https://picsum.photos/400?1">
+
+<h2 id="title">
+Funnel Link$
+</h2>
+
+<p id="status">
+Web Funnel • Live
+</p>
+
+<a href="#" class="btn primary">
+Visit Funnel
+</a>
+
+<a href="#" class="btn secondary">
+Instagram
+</a>
+
+<button
+class="download"
+onclick="downloadCSV()">
+Download CSV
+</button>
+
+<div id="qrPanel">
+
+<h3>QR Code</h3>
+
+<img id="qr">
+
+</div>
+
+</div>
+
+<div class="swipeHint">
+⬅ Swipe Profiles ➡
+</div>
+
+<!-- LEAD POPUP -->
+
+<div class="popup" id="popup">
+
+<div class="popupContent">
+
+<h2>
+Join Funnel List
+</h2>
+
+<input
+type="email"
+id="email"
+placeholder="Email">
+
+<input
+type="tel"
+id="phone"
+placeholder="Phone">
+
+<button onclick="saveLeadForm()">
+Submit
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* CLOCK */
+
+setInterval(()=>{
+clock.innerHTML=
+new Date().toLocaleTimeString();
+},1000);
+
+/* CHANNELS */
+
+const channels=[
+
+{
+name:"Web_Cast",
+status:"Live Funnel",
+img:"https://picsum.photos/400?1"
+},
+
+{
+name:"Video_Cast",
+status:"Video Funnel",
+img:"https://picsum.photos/400?2"
+},
+
+{
+name:"Pod_Cast",
+status:"Audio Funnel",
+img:"https://picsum.photos/400?3"
+},
+{
+name:"Live_Cast",
+status:"Audio Funnel",
+img:"https://picsum.photos/400?3"
+},
+{
+name:"Game_Cast",
+status:"Audio Funnel",
+img:"https://picsum.photos/400?3"
+}, 
+{
+name:"Audio_Cast",
+status:"Audio Funnel",
+img:"https://picsum.photos/400?3"
+}
+];
+
+let index=0;
+
+function loadChannel(i){
+
+title.innerText=
+channels[i].name;
+
+status.innerText=
+channels[i].status;
+
+profileImg.src=
+channels[i].img;
+
+}
+
+/* VISITORS */
+
+let visitors=
+localStorage.getItem("visitors")||0;
+
+visitors++;
+
+localStorage.setItem(
+"visitors",
+visitors
+);
+
+document.getElementById(
+"visitors"
+).innerHTML=
+"Visitors: "+visitors;
+
+/* LOGO */
+
+const logo=
+document.getElementById(
+"logoControl"
+);
+
+logo.onclick=()=>{
+
+index++;
+
+if(index>=channels.length){
+index=0;
+}
+
+loadChannel(index);
+
+logo.classList.add(
+"active"
+);
+
+setTimeout(()=>{
+logo.classList.remove(
+"active"
+);
+},300);
+
+};
+
+let lastTap=0;
+
+logo.addEventListener(
+"touchend",
+function(){
+
+let now=Date.now();
+
+if(now-lastTap<300){
+
+openQR();
+
+}
+
+lastTap=now;
+
+}
+);
+
+let hold;
+
+logo.addEventListener(
+"touchstart",
+()=>{
+
+hold=setTimeout(()=>{
+
+alert(
+"Admin Mode"
+);
+
+},700);
+
+}
+);
+
+logo.addEventListener(
+"touchend",
+()=>{
+
+clearTimeout(hold);
+
+}
+);
+
+/* QR */
+
+function openQR(){
+
+qrPanel.style.display=
+"block";
+
+qr.src=
+"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+
+encodeURIComponent(location.href);
+
+}
+
+/* LEADS */
+
+let leads=
+JSON.parse(
+localStorage.getItem(
+"leads"
+)||"[]"
+);
+
+function saveLead(email,phone){
+
+leads.push({
+
+email,
+phone,
+
+time:new Date()
+.toISOString()
+
+});
+
+localStorage.setItem(
+"leads",
+JSON.stringify(leads)
+);
+
+}
+
+function saveLeadForm(){
+
+let email=
+document.getElementById(
+"email"
+).value;
+
+let phone=
+document.getElementById(
+"phone"
+).value;
+
+if(!email||!phone){
+
+alert(
+"Enter Email and Phone"
+);
+
+return;
+
+}
+
+saveLead(
+email,
+phone
+);
+
+popup.style.display=
+"none";
+
+}
+
+/* CSV */
+
+function downloadCSV(){
+
+let csv=
+"email,phone,time\n";
+
+leads.forEach(l=>{
+
+csv+=
+`${l.email},${l.phone},${l.time}\n`;
+
+});
+
+let blob=
+new Blob(
+[csv],
+{
+type:"text/csv"
+}
+);
+
+let a=
+document.createElement("a");
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+"funnel_leads.csv";
+
+a.click();
+
+}
+
+/* SWIPE */
+
+let startX=0;
+
+document.addEventListener(
+"touchstart",
+e=>{
+
+startX=
+e.touches[0].clientX;
+
+}
+);
+
+document.addEventListener(
+"touchend",
+e=>{
+
+let endX=
+e.changedTouches[0].clientX;
+
+let diff=
+startX-endX;
+
+if(Math.abs(diff)>60){
+
+if(diff>0){
+
+index++;
+
+if(index>=channels.length)
+index=0;
+
+}
+else{
+
+index--;
+
+if(index<0)
+index=
+channels.length-1;
+
+}
+
+loadChannel(index);
+
+}
+
+}
+);
+
+/* INIT */
+
+loadChannel(0);
+
+</script>
+
+</body>
+</html>
+</div>
+
+<script>
+
+/* CLOCK */
+
+setInterval(()=>{
+clock.innerHTML=
+new Date().toLocaleTimeString();
+},1000);
+
+/* CHANNELS */
+
+const channels=[
+
+{
+name:"Web_Cast",
+status:"Live Funnel",
+img:"https://picsum.photos/400?1"
+},
+
+{
+name:"Video_Cast",
+status:"Video Funnel",
+img:"https://picsum.photos/400?2"
+},
+
+{
+name:"Pod_Cast",
+status:"Audio Funnel",
+img:"https://picsum.photos/400?3"
+}
+
+];
+
+let index=0;
+
+function loadChannel(i){
+
+title.innerText=
+channels[i].name;
+
+status.innerText=
+channels[i].status;
+
+profileImg.src=
+channels[i].img;
+
+}
+
+/* VISITORS */
+
+let visitors=
+localStorage.getItem("visitors")||0;
+
+visitors++;
+
+localStorage.setItem(
+"visitors",
+visitors
+);
+
+document.getElementById(
+"visitors"
+).innerHTML=
+"Visitors: "+visitors;
+
+/* LOGO */
+
+const logo=
+document.getElementById(
+"logoControl"
+);
+
+logo.onclick=()=>{
+
+index++;
+
+if(index>=channels.length){
+index=0;
+}
+
+loadChannel(index);
+
+logo.classList.add(
+"active"
+);
+
+setTimeout(()=>{
+logo.classList.remove(
+"active"
+);
+},300);
+
+};
+
+let lastTap=0;
+
+logo.addEventListener(
+"touchend",
+function(){
+
+let now=Date.now();
+
+if(now-lastTap<300){
+
+openQR();
+
+}
+
+lastTap=now;
+
+}
+);
+
+let hold;
+
+logo.addEventListener(
+"touchstart",
+()=>{
+
+hold=setTimeout(()=>{
+
+alert(
+"Admin Mode"
+);
+
+},700);
+
+}
+);
+
+logo.addEventListener(
+"touchend",
+()=>{
+
+clearTimeout(hold);
+
+}
+);
+
+/* QR */
+
+function openQR(){
+
+qrPanel.style.display=
+"block";
+
+qr.src=
+"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+
+encodeURIComponent(location.href);
+
+}
+
+/* LEADS */
+
+let leads=
+JSON.parse(
+localStorage.getItem(
+"leads"
+)||"[]"
+);
+
+function saveLead(email,phone){
+
+leads.push({
+
+email,
+phone,
+
+time:new Date()
+.toISOString()
+
+});
+
+localStorage.setItem(
+"leads",
+JSON.stringify(leads)
+);
+
+}
+
+function saveLeadForm(){
+
+let email=
+document.getElementById(
+"email"
+).value;
+
+let phone=
+document.getElementById(
+"phone"
+).value;
+
+if(!email||!phone){
+
+alert(
+"Enter Email and Phone"
+);
+
+return;
+
+}
+
+saveLead(
+email,
+phone
+);
+
+popup.style.display=
+"none";
+
+}
+
+/* CSV */
+
+function downloadCSV(){
+
+let csv=
+"email,phone,time\n";
+
+leads.forEach(l=>{
+
+csv+=
+`${l.email},${l.phone},${l.time}\n`;
+
+});
+
+let blob=
+new Blob(
+[csv],
+{
+type:"text/csv"
+}
+);
+
+let a=
+document.createElement("a");
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+"funnel_leads.csv";
+
+a.click();
+
+}
+
+/* SWIPE */
+
+let startX=0;
+
+document.addEventListener(
+"touchstart",
+e=>{
+
+startX=
+e.touches[0].clientX;
+
+}
+);
+
+document.addEventListener(
+"touchend",
+e=>{
+
+let endX=
+e.changedTouches[0].clientX;
+
+let diff=
+startX-endX;
+
+if(Math.abs(diff)>60){
+
+if(diff>0){
+
+index++;
+
+if(index>=channels.length)
+index=0;
+
+}
+else{
+
+index--;
+
+if(index<0)
+index=
+channels.length-1;
+
+}
+
+loadChannel(index);
+
+}
+
+}
+);
+
+/* INIT */
+
+loadChannel(0);
+
+</script>
+
+</body>
+</html>
