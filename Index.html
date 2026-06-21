@@ -1324,6 +1324,15 @@ loadChannel(index);
 loadChannel(0);
 
 </script>
+<script >
+  const fs = require("fs");
+const yaml = require("js-yaml");
 
+const config = yaml.load(
+  fs.readFileSync("./config.yml", "utf8")
+);
+
+console.log(config.newsletter.provider);
+</script>
 </body>
 </html>
